@@ -7,23 +7,29 @@ import (
 )
 
 type Client struct {
-	*resty.Request
+	Req	*resty.Request
 }
 
-type NsxManagerParams struct {
+type NsxManagerConfig	struct {
 	UserName      string
 	Password      string
 	Uri           string
 	AllowInsecssl bool
-	RestAgentName string
+	UserAgentName string
 }
 
 // NewClient creates a new client from a URL.
-func NewClient(mgrParams *NsxManagerParams) (*Client, error) {
+func NewClient(mgrParams *NsxManagerConfig) (*Client, error) {
 	restconn := resty.R()
 	c := &Client{
-		Request: restconn,
+		Req: restconn,
 	}
-	c.Request.SetHeader("User-Agent", mgrParams.RestAgentName)
+
+	c.Req.SetHeader("User-Agent", mgrParams.UserAgentName)
+
+	//ToDo: need to store the NsxManagerConfig 
+	//Some of the NSX manager config can ne set into resty.Request
+	//Remaining need to be stored in Client struct
+
 	return c, nil
 }
