@@ -7,7 +7,7 @@ import (
 	"github.com/go-resty/resty"
 )
 
-type NsxManagerConfig	struct {
+type NsxManagerConfig struct {
 	UserName      string
 	Password      string
 	Uri           string
@@ -16,10 +16,9 @@ type NsxManagerConfig	struct {
 }
 
 type Client struct {
-	Rclient	*resty.Client
+	Rclient   *resty.Client
 	MgrConfig *NsxManagerConfig
 }
-
 
 // NewClient creates a new client from a URL.
 func NewClient(mgrParams *NsxManagerConfig) (*Client, error) {
@@ -27,14 +26,14 @@ func NewClient(mgrParams *NsxManagerConfig) (*Client, error) {
 
 	rc.SetHeader("User-Agent", mgrParams.UserAgentName)
 	if mgrParams.AllowInsecssl {
-		rc.SetTLSClientConfig(&tls.Config{ InsecureSkipVerify: true })
+		rc.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
 
 	}
-	
+
 	rc.SetBasicAuth(mgrParams.UserName, mgrParams.Password)
 
 	c := &Client{
-		Rclient: rc,
+		Rclient:   rc,
 		MgrConfig: mgrParams,
 	}
 

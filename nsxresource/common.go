@@ -1,16 +1,16 @@
-package nsxresource 
+package nsxresource
 
 import (
 	"github.com/IBM-tfproviders/govnsx"
-	)
+)
 
 type Common struct {
-	Nsxc *govnsx.Client
+	Nsxc     *govnsx.Client
 	Location string
 }
 
-func NewCommon(c *govnsx.Client) Common{
-    return Common{
-        Nsxc: c,
-    }
+func NewCommon(c *govnsx.Client) Common {
+	return Common{
+		Nsxc: c,
+	}
 }

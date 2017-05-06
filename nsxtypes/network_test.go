@@ -1,12 +1,12 @@
 package nsxtypes
 
 import (
-    "testing"
 	"encoding/xml"
+	"testing"
 )
 
 func TestVirtualWireCreateSpecType_1(t *testing.T) {
-	
+
 	data := `<virtualWireCreateSpec>
       <name>name_test1</name>
       <description>spec testing</description>
@@ -14,11 +14,11 @@ func TestVirtualWireCreateSpecType_1(t *testing.T) {
       <ControlPlaneMode>UNICAST</ControlPlaneMode>
       <GuestVlanAllowed>true</GuestVlanAllowed>
  </virtualWireCreateSpec>
-` 
-	r := &VirtualWireCreateSpec {
+`
+	r := &VirtualWireCreateSpec{
 		Name: "",
 	}
-	
+
 	err := xml.Unmarshal([]byte(data), &r)
 
 	if err != nil {
@@ -83,9 +83,9 @@ func TestVirtualWireDecode_1(t *testing.T) {
 	  <macLearningEnabled>false</macLearningEnabled>
 	</virtualWire>
 	`
-	r := VirtualWire {
+	r := VirtualWire{
 		ObjectId: "",
-		TenantId: "", 
+		TenantId: "",
 	}
 
 	err := xml.Unmarshal([]byte(data), &r)
@@ -106,6 +106,6 @@ func TestVirtualWireDecode_1(t *testing.T) {
 func assertValuecheck(t *testing.T, name string, value string, expected string) {
 	if value != expected {
 		t.Fatalf("expected %s value %s, got %v", name, expected, value)
-	} 
+	}
 	return
 }
