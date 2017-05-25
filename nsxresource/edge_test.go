@@ -2,9 +2,9 @@ package nsxresource
 
 import (
 	"fmt"
-	"path"
 	"github.com/IBM-tfproviders/govnsx"
 	"github.com/IBM-tfproviders/govnsx/nsxtypes"
+	"path"
 	"testing"
 )
 
@@ -88,10 +88,10 @@ func TestInstallEdge(t *testing.T) {
 	}
 
 	dataCenterId, err := ReadEnv("NSX_DATACENTER")
-        if dataCenterId == "" {
-                t.Fatalf("[Error] NSX_DATACENTER is not set")
-                return
-        }
+	if dataCenterId == "" {
+		t.Fatalf("[Error] NSX_DATACENTER is not set")
+		return
+	}
 
 	var appliances = []nsxtypes.Appliance{nsxtypes.Appliance{
 		ResourcePoolId: resPoolId,
@@ -118,7 +118,7 @@ func TestInstallEdge(t *testing.T) {
 
 	// /api/4.0/edges/edge-183 ==> edge-183
 
-	edgeDHCPObj := NewEdgeDhcp(nsxClient)
+	edgeDHCPObj := NewEdgeDHCP(nsxClient)
 
 	var ipPools = []nsxtypes.IPPool{nsxtypes.IPPool{
 		IPRange:             "192.168.4.192-192.168.4.220",
@@ -145,8 +145,7 @@ func TestInstallEdge(t *testing.T) {
 		return
 	}
 
-	//edgeDHCPObj := NewEdgeDhcp(nsxClient)
-
+	edgeDHCPIPPoolObj := NewEdgeDHCPIPPool(nsxClient)
 	ipPoolSpec := &nsxtypes.IPPool{
 		IPRange:             "192.168.5.192-192.168.5.220",
 		DefaultGw:           "192.168.5.1",
@@ -157,7 +156,7 @@ func TestInstallEdge(t *testing.T) {
 		LeaseTime:           3600,
 		AutoConfigureDNS:    true}
 
-	ipPoolPostResp, err := edgeDHCPObj.Post(ipPoolSpec, edgeId)
+	ipPoolPostResp, err := edgeDHCPIPPoolObj.Post(ipPoolSpec, edgeId)
 
 	if err != nil {
 		t.Fatalf("[Error] addIPPool.Post() returned error : %v", err)
@@ -166,10 +165,17 @@ func TestInstallEdge(t *testing.T) {
 
 	fmt.Println("Added IP Pool to Edge DHCP: ", ipPoolPostResp.Location)
 
+	getDHCPConfigResp, err := edgeDHCPObj.Get(edgeId)
+
+	if err != nil {
+		t.Fatalf("[Error] dhcp.Get() returned error : %v", err)
+		return
+	}
+
 	ipPoolId := path.Base(ipPoolPostResp.Location)
 	fmt.Println("Deleting IP Pool from Edge DHCP: ", ipPoolId)
 
-	err = edgeDHCPObj.DeleteIPPool(edgeId, ipPoolId)
+	err = edgeDHCPIPPoolObj.Delete(edgeId, ipPoolId)
 
 	if err != nil {
 		t.Fatalf("[Error] deleteIPPool.Delete() returned error : %v", err)

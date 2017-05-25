@@ -5,9 +5,9 @@ import (
 )
 
 const (
-	EdgeDhcpUriFormat          = "%s/api/4.0/edges/%s/dhcp/config"
-	EdgeDhcpAddIPPoolUriFormat = "%s/api/4.0/edges/%s/dhcp/config/ippools"
-	EdgeDhcpDelIPPoolUriFormat = "%s/api/4.0/edges/%s/dhcp/config/ippools/%s"
+	EdgeDHCPUriFormat          = "%s/api/4.0/edges/%s/dhcp/config"
+	EdgeDHCPAddIPPoolUriFormat = "%s/api/4.0/edges/%s/dhcp/config/ippools"
+	EdgeDHCPDelIPPoolUriFormat = "%s/api/4.0/edges/%s/dhcp/config/ippools/%s"
 )
 
 type IPPool struct {
@@ -20,11 +20,13 @@ type IPPool struct {
 	SecondaryNameServer string   `xml:"secondaryNameServer,omitempty"`
 	LeaseTime           int      `xml:"leaseTime,omitempty"`
 	AutoConfigureDNS    bool     `xml:"autoConfigureDNS,omitempty"`
+    PoolId              string   `xml:"poolId,omitempty"`
+    AllowHugeRange      bool     `xml:"allowHugeRange,omitempty"`
 }
 
 type LoggingInfo struct {
 	Enable   bool   `xml:"enable"`
-	LogLevel string `xml:"logLevel"`
+	LogLevel string `xml:"logLevel,omitempty"`
 }
 
 type ConfigDHCPServiceSpec struct {
@@ -37,10 +39,20 @@ type AddIPPoolToDHCPServiceResp struct {
 	Location string
 }
 
+type DHCPConfig struct {
+    XMLName xml.Name `xml:"dhcp"`
+	IPPools []IPPool    `xml:"ipPools>ipPool"`
+	Logging LoggingInfo `xml:"logging,omitempty"`
+}
+
 func NewConfigDHCPServiceSpec() *ConfigDHCPServiceSpec {
 	return &ConfigDHCPServiceSpec{}
 }
 
-func NewIPPool() *IPPool {
+func NewDHCPIPPool() *IPPool {
 	return &IPPool{}
+}
+
+func NewDHCPConfig() *DHCPConfig {
+	return &DHCPConfig{}
 }

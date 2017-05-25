@@ -8,21 +8,21 @@ import (
 	"github.com/IBM-tfproviders/govnsx/nsxtypes"
 )
 
-type EdgeDhcp struct {
+type EdgeDHCP struct {
 	Common
 }
 
-func NewEdgeDhcp(c *govnsx.Client) *EdgeDhcp {
-	return &EdgeDhcp{
+func NewEdgeDHCP(c *govnsx.Client) *EdgeDHCP {
+	return &EdgeDHCP{
 		Common: NewCommon(c),
 	}
 }
 
 //PUT Method for configuring an Edge with DHCP Service
-func (ed EdgeDhcp) Put(dhcpSpec *nsxtypes.ConfigDHCPServiceSpec,
+func (ed EdgeDHCP) Put(dhcpSpec *nsxtypes.ConfigDHCPServiceSpec,
 	edgeId string) error {
 
-	putUri := fmt.Sprintf(nsxtypes.EdgeDhcpUriFormat, ed.Nsxc.MgrConfig.Uri, edgeId)
+	putUri := fmt.Sprintf(nsxtypes.EdgeDHCPUriFormat, ed.Nsxc.MgrConfig.Uri, edgeId)
 
 	outputXML, err := xml.MarshalIndent(dhcpSpec, "  ", "    ")
 	if err != nil {
@@ -45,64 +45,38 @@ func (ed EdgeDhcp) Put(dhcpSpec *nsxtypes.ConfigDHCPServiceSpec,
 	return nil
 }
 
-//DELETE Method to delete DHCP configuration from DHCP Service
-func (ed EdgeDhcp) Delete(edgeId string) error {
+//GET Method to get DHCP configuration from DHCP Service
+func (ed EdgeDHCP) Get(edgeId string) (*nsxtypes.DHCPConfig, error) {
 
-	deleteUri := fmt.Sprintf(nsxtypes.EdgeDhcpUriFormat,
+	getUri := fmt.Sprintf(nsxtypes.EdgeDHCPUriFormat,
 		ed.Nsxc.MgrConfig.Uri, edgeId)
 
-	resp, err := ed.Nsxc.Rclient.R().Delete(deleteUri)
+	resp, err := ed.Nsxc.Rclient.R().Get(getUri)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	sc := resp.StatusCode()
-	if (sc < 200) || (sc > 204) {
+	if resp.StatusCode() != 200 {
 		err := fmt.Errorf("[ERROR] %d : %s,\n URI:%s\n",
 			resp.StatusCode(),
-			resp.Status(), deleteUri)
-		return err
+			resp.Status(), getUri)
+		return nil, err
 	}
 
-	return nil
+	edge_dhcp := nsxtypes.NewDHCPConfig()
+
+	err = xml.Unmarshal(resp.Body(), edge_dhcp)
+	if err != nil {
+		return nil, err
+	}
+	return edge_dhcp, nil
 }
 
-//POST Method to add IP Pool into DHCP configuration
-func (ed EdgeDhcp) Post(ipPool *nsxtypes.IPPool, edgeId string) (
-	*nsxtypes.AddIPPoolToDHCPServiceResp, error) {
+//DELETE Method to delete DHCP configuration from DHCP Service
+func (ed EdgeDHCP) Delete(edgeId string) error {
 
-	postUri := fmt.Sprintf(nsxtypes.EdgeDhcpAddIPPoolUriFormat,
+	deleteUri := fmt.Sprintf(nsxtypes.EdgeDHCPUriFormat,
 		ed.Nsxc.MgrConfig.Uri, edgeId)
-
-	outputXML, err := xml.MarshalIndent(ipPool, "  ", "    ")
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := ed.Nsxc.Rclient.R().SetBody(outputXML).Post(postUri)
-	if err != nil {
-		return nil, err
-	}
-
-	sc := resp.StatusCode()
-	if (sc < 200) || (sc > 204) {
-		err := fmt.Errorf("[ERROR] %d : %s,\n XML: %s\n URI:%s\n",
-			resp.StatusCode(),
-			resp.Status(), outputXML, postUri)
-		return nil, err
-	}
-
-	ipPoolResp := &nsxtypes.AddIPPoolToDHCPServiceResp{
-		Location: resp.RawResponse.Header.Get("Location"),
-	}
-	return ipPoolResp, nil
-}
-
-//DELETE Method to delete IP Pool from DHCP configuration
-func (ed EdgeDhcp) DeleteIPPool(edgeId string, ipPoolId string) error {
-
-	deleteUri := fmt.Sprintf(nsxtypes.EdgeDhcpDelIPPoolUriFormat,
-		ed.Nsxc.MgrConfig.Uri, edgeId, ipPoolId)
 
 	resp, err := ed.Nsxc.Rclient.R().Delete(deleteUri)
 	if err != nil {
