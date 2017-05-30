@@ -2,15 +2,12 @@ package govnsx
 
 import (
 	//"fmt"
+	"crypto/tls"
 
 	"github.com/go-resty/resty"
 )
 
-type Client struct {
-	Req	*resty.Request
-}
-
-type NsxManagerConfig	struct {
+type NsxManagerConfig struct {
 	UserName      string
 	Password      string
 	Uri           string
@@ -18,18 +15,28 @@ type NsxManagerConfig	struct {
 	UserAgentName string
 }
 
+type Client struct {
+	Rclient   *resty.Client
+	MgrConfig *NsxManagerConfig
+}
+
 // NewClient creates a new client from a URL.
 func NewClient(mgrParams *NsxManagerConfig) (*Client, error) {
-	restconn := resty.R()
-	c := &Client{
-		Req: restconn,
+	rc := resty.New()
+
+	rc.SetHeader("User-Agent", mgrParams.UserAgentName)
+	if mgrParams.AllowInsecssl {
+		rc.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+
 	}
 
-	c.Req.SetHeader("User-Agent", mgrParams.UserAgentName)
+	rc.SetBasicAuth(mgrParams.UserName, mgrParams.Password)
+	rc.SetHeader("Content-Type", "application/xml")
 
-	//ToDo: need to store the NsxManagerConfig 
-	//Some of the NSX manager config can ne set into resty.Request
-	//Remaining need to be stored in Client struct
+	c := &Client{
+		Rclient:   rc,
+		MgrConfig: mgrParams,
+	}
 
 	return c, nil
 }
