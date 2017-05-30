@@ -2,6 +2,7 @@ package nsxtypes
 
 import (
 	"encoding/xml"
+	"fmt"
 	"testing"
 )
 
@@ -11,11 +12,11 @@ func TestVirtualWireCreateSpecType_1(t *testing.T) {
       <name>name_test1</name>
       <description>spec testing</description>
       <tenantId>test tid</tenantId>
-      <ControlPlaneMode>UNICAST</ControlPlaneMode>
-      <GuestVlanAllowed>true</GuestVlanAllowed>
+      <controlPlaneMode>UNICAST</controlPlaneMode>
+      <guestVlanAllowed>true</guestVlanAllowed>
  </virtualWireCreateSpec>
 `
-	r := &VirtualWireCreateSpec{
+	r := &VWCreateSpec{
 		Name: "",
 	}
 
@@ -28,7 +29,30 @@ func TestVirtualWireCreateSpecType_1(t *testing.T) {
 	assertValuecheck(t, "Description", r.Description, "spec testing")
 	assertValuecheck(t, "TenantId", r.TenantId, "test tid")
 	assertValuecheck(t, "ControlPlaneMode", r.ControlPlaneMode, "UNICAST")
-	assertValuecheck(t, "GuestVlanAllowed", r.GuestVlanAllowed, "true")
+	assertValuecheck(t, "GuestVlanAllowed", fmt.Sprintf("%v", r.GuestVlanAllowed), "true")
+}
+
+func TestVirtualWireCreateSpecType_2(t *testing.T) {
+
+	data := `<virtualWireCreateSpec>
+      <name>name_test2</name>
+      <tenantId>test tid</tenantId>
+ </virtualWireCreateSpec>
+`
+	r := &VWCreateSpec{
+		Name: "",
+	}
+
+	err := xml.Unmarshal([]byte(data), &r)
+
+	if err != nil {
+		t.Fatalf("xml.Unmarshal()  failed : %v\n", err)
+	}
+	assertValuecheck(t, "Name", r.Name, "name_test2")
+	assertValuecheck(t, "Description", r.Description, "")
+	assertValuecheck(t, "TenantId", r.TenantId, "test tid")
+	assertValuecheck(t, "ControlPlaneMode", r.ControlPlaneMode, "")
+	assertValuecheck(t, "GuestVlanAllowed", fmt.Sprintf("%v", r.GuestVlanAllowed), "false")
 }
 
 func TestVirtualWireDecode_1(t *testing.T) {
@@ -99,8 +123,35 @@ func TestVirtualWireDecode_1(t *testing.T) {
 	assertValuecheck(t, "SwitchOId", r.SwitchOId, "dvs-61")
 	assertValuecheck(t, "SwitchName", r.SwitchName, "dvSwitch1")
 	assertValuecheck(t, "VdnId", r.VdnId, "5000")
-	assertValuecheck(t, "GuestVlanAllowed", r.GuestVlanAllowed, "false")
+	assertValuecheck(t, "GuestVlanAllowed", fmt.Sprintf("%v", r.GuestVlanAllowed), "false")
 	assertValuecheck(t, "ControlPlaneMode", r.ControlPlaneMode, "UNICAST_MODE")
+}
+
+func TestVirtualWireDecode_2(t *testing.T) {
+	data := `
+		<?xml version="1.0" encoding="UTF-8"?>
+		<virtualWire>
+			<name>TestVW2</name>
+			<tenantId>VWire tenant</tenantId>
+			<controlPlaneMode>UNICAST_MODE</controlPlaneMode>
+			<description>Web Logical Switch</description>
+		</virtualWire>
+	`
+	r := VirtualWire{
+		ObjectId: "",
+		TenantId: "",
+	}
+
+	err := xml.Unmarshal([]byte(data), &r)
+
+	if err != nil {
+		t.Fatalf("xml.Unmarshal()  failed : %v\n", err)
+	}
+
+	assertValuecheck(t, "ObjectId", r.Name, "TestVW2")
+	assertValuecheck(t, "TenantId", r.TenantId, "VWire tenant")
+	assertValuecheck(t, "ControlPlaneMode", r.ControlPlaneMode, "UNICAST_MODE")
+	assertValuecheck(t, "Description", r.Description, "Web Logical Switch")
 }
 
 func assertValuecheck(t *testing.T, name string, value string, expected string) {

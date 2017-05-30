@@ -31,6 +31,7 @@ func NewClient(mgrParams *NsxManagerConfig) (*Client, error) {
 	}
 
 	rc.SetBasicAuth(mgrParams.UserName, mgrParams.Password)
+	rc.SetHeader("Content-Type", "application/xml")
 
 	c := &Client{
 		Rclient:   rc,
