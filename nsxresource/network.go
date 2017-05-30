@@ -22,6 +22,7 @@ func NewNetwork(c *govnsx.Client) *Network {
 
 //GET Method for a NSX network - VirtualWire
 func (n Network) Get(location string) (*nsxtypes.VirtualWire, error) {
+
 	resp, err := n.Nsxc.Rclient.R().Get(n.Nsxc.MgrConfig.Uri + location)
 	if err != nil {
 		return nil, err
