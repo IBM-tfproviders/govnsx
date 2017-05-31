@@ -19,9 +19,11 @@ func NewEdge(c *govnsx.Client) *Edge {
 }
 
 // GET  Method for a NSX Edge
-func (e Edge) Get(location string) (*nsxtypes.Edge, error) {
+func (e Edge) Get(edgeId string) (*nsxtypes.Edge, error) {
 
-	resp, err := e.Nsxc.Rclient.R().Get(location)
+	getUri := fmt.Sprintf(nsxtypes.EdgeUriLocFormat, e.Nsxc.MgrConfig.Uri, edgeId)
+
+	resp, err := e.Nsxc.Rclient.R().Get(getUri)
 	if err != nil {
 		return nil, err
 	}
@@ -71,11 +73,10 @@ func (e Edge) Post(edgeSpec *nsxtypes.EdgeSGWInstallSpec) (*nsxtypes.EdgePostRes
 	return edge, nil
 }
 
-// POST Method for a NSX Edge
+// PUT Method for a NSX Edge
 func (e Edge) Put(edgeSpec *nsxtypes.EdgeSGWInstallSpec, edgeId string) error {
 
-	putUri := fmt.Sprintf(nsxtypes.EdgeUriFormat, e.Nsxc.MgrConfig.Uri)
-	putUri = fmt.Sprintf("%s%s", putUri, edgeId)
+	putUri := fmt.Sprintf(nsxtypes.EdgeUriLocFormat, e.Nsxc.MgrConfig.Uri, edgeId)
 
 	outputXML, err := xml.MarshalIndent(edgeSpec, "  ", "    ")
 	if err != nil {
@@ -100,8 +101,7 @@ func (e Edge) Put(edgeSpec *nsxtypes.EdgeSGWInstallSpec, edgeId string) error {
 // DELETE Method for NSX Edge
 func (e Edge) Delete(edgeId string) error {
 
-	deleteUri := fmt.Sprintf(nsxtypes.EdgeUriFormat, e.Nsxc.MgrConfig.Uri)
-	deleteUri = fmt.Sprintf("%s%s", deleteUri, edgeId)
+	deleteUri := fmt.Sprintf(nsxtypes.EdgeUriLocFormat, e.Nsxc.MgrConfig.Uri, edgeId)
 
 	resp, err := e.Nsxc.Rclient.R().Delete(deleteUri)
 	if err != nil {

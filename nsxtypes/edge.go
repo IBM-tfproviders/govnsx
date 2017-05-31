@@ -6,6 +6,7 @@ import (
 
 const (
 	EdgeUriFormat = "%s/api/4.0/edges/"
+	EdgeUriLocFormat = "%s/api/4.0/edges/%s"
 )
 
 type Appliance struct {
@@ -27,9 +28,14 @@ type Vnic struct {
 
 type EdgeSGWInstallSpec struct {
 	XMLName        xml.Name    `xml:"edge"`
-	Name           string      `xml:"name"`
-	Description    string      `xml:"description"`
-	Tenant         string      `xml:"tenant"`
+	Datacenter     string      `xml:"datacenterMoid"`
+	Name           string      `xml:"name,omitempty"`
+	Description    string      `xml:"description,omitempty"`
+	Tenant         string      `xml:"tenant,omitempty"`
+	Fqdn           string      `xml:"fqdn,omitempty"`
+	VseLogLevel    string      `xml:"vseLogLevel,omitempty"`
+	EnableAesni    bool        `xml:"enableAesni,omitempty"`
+	EnableFips     bool        `xml:"enableFips,omitempty"`
 	AppliancesList []Appliance `xml:"appliances>appliance"`
 	Vnics          []Vnic      `xml:"vnics>vnic"`
 }
