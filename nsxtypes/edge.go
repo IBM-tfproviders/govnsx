@@ -40,7 +40,7 @@ type EdgeInstallSpec struct {
 	Datacenter  string   `xml:"datacenterName"`
 	Name        string   `xml:"name,omitempty"`
 	Description string   `xml:"description,omitempty"`
-	Type        string   `xml:"type"`
+	Type        string   `xml:"type,omitempty"`
 	Tenant      string   `xml:"tenant,omitempty"`
 	Fqdn        string   `xml:"fqdn,omitempty"`
 	VseLogLevel string   `xml:"vseLogLevel,omitempty"`
@@ -62,7 +62,7 @@ type Edge struct {
 	Status         string      `xml:"status"`
 	Tenant         string      `xml:"tenant"`
 	Name           string      `xml:"name"`
-	AppliancesList []Appliance `xml:"appliances>appliance"`
+	Appliances     Appliances  `xml:"appliances"`
 	Vnics          []Vnic      `xml:"vnics>vnic"`
 	Type           string      `xml:"type"`
 }
