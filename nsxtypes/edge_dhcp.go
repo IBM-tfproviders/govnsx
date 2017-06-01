@@ -20,8 +20,8 @@ type IPPool struct {
 	SecondaryNameServer string   `xml:"secondaryNameServer,omitempty"`
 	LeaseTime           int      `xml:"leaseTime,omitempty"`
 	AutoConfigureDNS    bool     `xml:"autoConfigureDNS,omitempty"`
-    PoolId              string   `xml:"poolId,omitempty"`
-    AllowHugeRange      bool     `xml:"allowHugeRange,omitempty"`
+	PoolId              string   `xml:"poolId,omitempty"`
+	AllowHugeRange      bool     `xml:"allowHugeRange,omitempty"`
 }
 
 type LoggingInfo struct {
@@ -40,7 +40,7 @@ type AddIPPoolToDHCPServiceResp struct {
 }
 
 type DHCPConfig struct {
-    XMLName xml.Name `xml:"dhcp"`
+	XMLName xml.Name    `xml:"dhcp"`
 	IPPools []IPPool    `xml:"ipPools>ipPool"`
 	Logging LoggingInfo `xml:"logging,omitempty"`
 }

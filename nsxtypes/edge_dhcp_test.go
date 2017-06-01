@@ -35,8 +35,9 @@ func TestConfigDHCPServiceSpec(t *testing.T) {
 		t.Fatalf("xml.Unmarshal() ConfigDHCPServiceSpec failed : %v\n", err)
 	}
 
-	ipPools := []IPPool{IPPool{xml.Name{"", "ipPool"}, "192.168.4.192-192.168.4.220", "192.168.4.1",
-		"255.255.255.0", "eng.vmware.com", "192.168.4.1", "4.2.2.4", 3600, true}}
+	ipPools := []IPPool{IPPool{XMLName: xml.Name{"", "ipPool"}, IPRange: "192.168.4.192-192.168.4.220", DefaultGw: "192.168.4.1",
+		SubnetMask: "255.255.255.0", DomainName: "eng.vmware.com", PrimaryNameServer: "192.168.4.1",
+		SecondaryNameServer: "4.2.2.4", LeaseTime: 3600, AutoConfigureDNS: true}}
 	if !reflect.DeepEqual(r.IPPools, ipPools) {
 		t.Fatalf("expected value %s, got %s", ipPools, r.IPPools)
 	}
@@ -68,8 +69,9 @@ func TestAddIPPoolToDHCPServiceSpec(t *testing.T) {
 		t.Fatalf("xml.Unmarshal() AddIPPoolToDHCPServiceSpec failed : %v\n", err)
 	}
 
-	ipPool := IPPool{xml.Name{"", "ipPool"}, "192.168.4.192-192.168.4.220", "192.168.4.1", "255.255.255.0",
-		"eng.vmware.com", "192.168.4.1", "4.2.2.4", 3600, true}
+	ipPool := IPPool{XMLName: xml.Name{"", "ipPool"}, IPRange: "192.168.4.192-192.168.4.220", DefaultGw: "192.168.4.1",
+		SubnetMask: "255.255.255.0", DomainName: "eng.vmware.com", PrimaryNameServer: "192.168.4.1",
+		SecondaryNameServer: "4.2.2.4", LeaseTime: 3600, AutoConfigureDNS: true}
 	if !reflect.DeepEqual(r, ipPool) {
 		t.Fatalf("expected value %s, got %s", ipPool, r)
 	}
