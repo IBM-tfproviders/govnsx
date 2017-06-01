@@ -17,7 +17,7 @@ type Appliance struct {
 
 type Appliances struct {
 	AppliancesList   []Appliance `xml:"appliance"`
-	DeployAppliances bool        `xml:"deployAppliances,omitempty"`
+	DeployAppliances bool        `xml:"deployAppliances"`
 	ApplianceSize    string      `xml:"applianceSize,omitempty"`
 }
 
@@ -47,7 +47,7 @@ type EdgeInstallSpec struct {
 	EnableAesni bool     `xml:"enableAesni,omitempty"`
 	EnableFips  bool     `xml:"enableFips,omitempty"`
 	Appliances Appliances `xml:"appliances"`
-	Vnics      []Vnic     `xml:"vnics>vnic"`
+	Vnics      []Vnic     `xml:"vnics>vnic,omitempty"`
 }
 
 type EdgePostResp struct {
