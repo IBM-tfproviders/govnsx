@@ -28,8 +28,8 @@ type AddressGroup struct {
 
 type Vnic struct {
 	Index         string         `xml:"index"`
-	PortgroupId   string         `xml:"portgroupId"`
-	AddressGroups []AddressGroup `xml:"addressGroups>addressGroup"`
+	PortgroupId   string         `xml:"portgroupId,omitempty"`
+	AddressGroups []AddressGroup `xml:"addressGroups>addressGroup,omitempty"`
 	IsConnected   bool           `xml:"isConnected"`
 	Mtu           string         `xml:"mtu,omitempty"`
 	Type          string         `xml:"type,omitempty"`
