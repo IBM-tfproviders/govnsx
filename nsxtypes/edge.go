@@ -51,7 +51,8 @@ type EdgeInstallSpec struct {
 }
 
 type EdgePostResp struct {
-	EdgeId string
+	EdgeId   string
+	Location string
 }
 
 type Edge struct {

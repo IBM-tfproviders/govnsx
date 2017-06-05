@@ -93,14 +93,14 @@ func TestInstallEdge(t *testing.T) {
 		return
 	}
 
-	appliances := nsxtypes.Appliances{ApplianceSize: "compact", 
-                    DeployAppliances: true, AppliancesList: []nsxtypes.Appliance{
-                        nsxtypes.Appliance{ResourcePoolId: resPoolId,
-                            DatastoreId:    dataStoreId,}}}
+	appliances := nsxtypes.Appliances{ApplianceSize: "compact",
+		DeployAppliances: true, AppliancesList: []nsxtypes.Appliance{
+			nsxtypes.Appliance{ResourcePoolId: resPoolId,
+				DatastoreId: dataStoreId}}}
 
 	edgeInstallSpec := &nsxtypes.EdgeInstallSpec{
 		Name:        "Edge-Dhcp-UT1",
-        Type:        "gatewayServices",
+		Type:        "gatewayServices",
 		Description: "Edge-Dhcp-UT1",
 		Datacenter:  dataCenterId,
 		Tenant:      "virtual wire tenant",

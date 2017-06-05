@@ -68,6 +68,7 @@ func (e Edge) Post(edgeSpec *nsxtypes.EdgeInstallSpec) (*nsxtypes.EdgePostResp, 
 
 	edge := &nsxtypes.EdgePostResp{
 		EdgeId: edgeId,
+		Location: resp.RawResponse.Header.Get("Location"),
 	}
 
 	return edge, nil
