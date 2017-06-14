@@ -43,7 +43,7 @@ func (e Edge) Get(edgeId string) (*nsxtypes.Edge, error) {
 }
 
 // POST Method for a NSX Edge
-func (e Edge) Post(edgeSpec *nsxtypes.EdgeSGWInstallSpec) (*nsxtypes.EdgePostResp, error) {
+func (e Edge) Post(edgeSpec *nsxtypes.EdgeInstallSpec) (*nsxtypes.EdgePostResp, error) {
 
 	postUri := fmt.Sprintf(nsxtypes.EdgeUriFormat, e.Nsxc.MgrConfig.Uri)
 
@@ -68,13 +68,14 @@ func (e Edge) Post(edgeSpec *nsxtypes.EdgeSGWInstallSpec) (*nsxtypes.EdgePostRes
 
 	edge := &nsxtypes.EdgePostResp{
 		EdgeId: edgeId,
+		Location: resp.RawResponse.Header.Get("Location"),
 	}
 
 	return edge, nil
 }
 
 // PUT Method for a NSX Edge
-func (e Edge) Put(edgeSpec *nsxtypes.EdgeSGWInstallSpec, edgeId string) error {
+func (e Edge) Put(edgeSpec *nsxtypes.EdgeInstallSpec, edgeId string) error {
 
 	putUri := fmt.Sprintf(nsxtypes.EdgeUriLocFormat, e.Nsxc.MgrConfig.Uri, edgeId)
 

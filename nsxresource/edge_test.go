@@ -93,18 +93,19 @@ func TestInstallEdge(t *testing.T) {
 		return
 	}
 
-	var appliances = []nsxtypes.Appliance{nsxtypes.Appliance{
-		ResourcePoolId: resPoolId,
-		DatastoreId:    dataStoreId,
-	}}
+	appliances := nsxtypes.Appliances{ApplianceSize: "compact",
+		DeployAppliances: true, AppliancesList: []nsxtypes.Appliance{
+			nsxtypes.Appliance{ResourcePoolId: resPoolId,
+				DatastoreId: dataStoreId}}}
 
-	edgeInstallSpec := &nsxtypes.EdgeSGWInstallSpec{
-		Name:           "Edge-Dhcp-UT1",
-		Description:    "Edge-Dhcp-UT1",
-		Datacenter:     dataCenterId,
-		Tenant:         "virtual wire tenant",
-		AppliancesList: appliances,
-		Vnics:          vnics,
+	edgeInstallSpec := &nsxtypes.EdgeInstallSpec{
+		Name:        "Edge-Dhcp-UT1",
+		Type:        "gatewayServices",
+		Description: "Edge-Dhcp-UT1",
+		Datacenter:  dataCenterId,
+		Tenant:      "virtual wire tenant",
+		Appliances:  appliances,
+		Vnics:       vnics,
 	}
 
 	resp, err := edge.Post(edgeInstallSpec)
@@ -165,7 +166,7 @@ func TestInstallEdge(t *testing.T) {
 
 	fmt.Println("Added IP Pool to Edge DHCP: ", ipPoolPostResp.Location)
 
-	getDHCPConfigResp, err := edgeDHCPObj.Get(edgeId)
+	_, err = edgeDHCPObj.Get(edgeId)
 
 	if err != nil {
 		t.Fatalf("[Error] dhcp.Get() returned error : %v", err)
