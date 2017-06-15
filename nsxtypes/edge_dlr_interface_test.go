@@ -1,8 +1,8 @@
 package nsxtypes
 
 import (
-        "encoding/xml"
-        "testing"
+	"encoding/xml"
+	"testing"
 )
 
 func TestEdgeDlrAddInterfacesSpec(t *testing.T) {
@@ -31,11 +31,11 @@ func TestEdgeDlrAddInterfacesSpec(t *testing.T) {
 	var r EdgeDLRAddInterfacesSpec
 	err := xml.Unmarshal([]byte(data), &r)
 
-        if err != nil {
-                t.Fatalf("xml.Unmarshal()  failed : %v\n", err)
-        }
+	if err != nil {
+		t.Fatalf("xml.Unmarshal()  failed : %v\n", err)
+	}
 
-	assertValuecheck(t, "Name", r.Interfaces[0].Name, "interface1")
-	assertValuecheck(t, "PrimaryAddress", r.Interfaces[0].AddressGroups[0].PrimaryAddress, "10.10.10.1")
-	assertValuecheck(t, "ConnectedToId", r.Interfaces[1].ConnectedToId, "virtualwire-212")
+	assertValuecheck(t, "Name", r.EdgeDLRInterfaceList[0].Name, "interface1")
+	assertValuecheck(t, "PrimaryAddress", r.EdgeDLRInterfaceList[0].AddressGroups[0].PrimaryAddress, "10.10.10.1")
+	assertValuecheck(t, "ConnectedToId", r.EdgeDLRInterfaceList[1].ConnectedToId, "virtualwire-212")
 }

@@ -18,7 +18,30 @@ func NewEdgeDLRInterfaces(c *govnsx.Client) *EdgeDLRInterfaces {
 	}
 }
 
-// Router modular APIs
+// DLR modular APIs
+func (edlr EdgeDLRInterfaces) Get(edgeId string, index string) (*nsxtypes.EdgeDLRInterface, error) {
+	getUri := fmt.Sprintf(nsxtypes.EdgeDLRGetInterfaceUriFormat,
+		edlr.Nsxc.MgrConfig.Uri, edgeId, index)
+
+	resp, err := edlr.Nsxc.Rclient.R().Get(getUri)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode() != 200 {
+		err := fmt.Errorf("[ERROR] %d : %s", resp.StatusCode(), resp.Status())
+		return nil, err
+	}
+
+	iface := nsxtypes.NewEdgeDLRInterface()
+
+	err = xml.Unmarshal(resp.Body(), iface)
+	if err != nil {
+		return nil, err
+	}
+	return iface, nil
+}
+
 // POST Method to add Interfaces
 func (edlr EdgeDLRInterfaces) Post(interfaces *nsxtypes.EdgeDLRAddInterfacesSpec, edgeId string) (*nsxtypes.EdgeDLRAddInterfacesResp, error) {
 
@@ -71,7 +94,6 @@ func (edlr EdgeDLRInterfaces) Delete(edgeId string, index string) error {
 	if err != nil {
 		return err
 	}
-	
 
 	sc := resp.StatusCode()
 	if (sc < 200) || (sc > 204) {

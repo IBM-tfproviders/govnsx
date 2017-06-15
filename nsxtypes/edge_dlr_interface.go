@@ -1,21 +1,22 @@
 package nsxtypes
 
 import (
-        "encoding/xml"
+	"encoding/xml"
 )
 
 const (
-	EdgeDLRAddInterfacesUriFormat = "%s/api/4.0/edges/%s/interfaces/?action=patch"
-	EdgeDLRDelAllInterfacesUriFormat = "%s/api/4.0/edges/%s/interfaces"
+	EdgeDLRAddInterfacesUriFormat        = "%s/api/4.0/edges/%s/interfaces/?action=patch"
+	EdgeDLRDelAllInterfacesUriFormat     = "%s/api/4.0/edges/%s/interfaces"
 	EdgeDLRDelbyIndexInterfacesUriFormat = "%s/api/4.0/edges/%s/interfaces/?index=%s"
+	EdgeDLRGetInterfaceUriFormat         = "%s/api/4.0/edges/%s/interfaces/%s"
 )
 
-type Interface struct {
+type EdgeDLRInterface struct {
 	Label           string         `xml:"label,omitempty"`
 	Name            string         `xml:"name,omitempty"`
 	AddressGroups   []AddressGroup `xml:"addressGroups>addressGroup,omitempty"`
-        Mtu             string         `xml:"mtu,omitempty"`
-        Type            string         `xml:"type,omitempty"`
+	Mtu             string         `xml:"mtu,omitempty"`
+	Type            string         `xml:"type,omitempty"`
 	IsConnected     bool           `xml:"isConnected,omitempty"`
 	IsSharedNetwork bool           `xml:"isSharedNetwork,omitempty"`
 	Index           string         `xml:"index,omitempty"`
@@ -23,9 +24,13 @@ type Interface struct {
 	ConnectedToName string         `xml:"connectedToName"`
 }
 
+func NewEdgeDLRInterface() *EdgeDLRInterface {
+	return &EdgeDLRInterface{}
+}
+
 type EdgeDLRInterfaces struct {
-	XMLName      xml.Name      `xml:"interfaces"`
-	Interfaces   []Interface   `xml:"interface"`
+	XMLName              xml.Name           `xml:"interfaces"`
+	EdgeDLRInterfaceList []EdgeDLRInterface `xml:"interface"`
 }
 
 type EdgeDLRAddInterfacesSpec EdgeDLRInterfaces
