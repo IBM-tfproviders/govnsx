@@ -19,9 +19,9 @@ func NewEdgeDLRInterfaces(c *govnsx.Client) *EdgeDLRInterfaces {
 }
 
 // DLR modular APIs
-func (edlr EdgeDLRInterfaces) Get(edgeId string, index string) (*nsxtypes.EdgeDLRInterface, error) {
+func (edlr EdgeDLRInterfaces) Get(edgeId string) (*nsxtypes.EdgeDLRAddInterfacesResp, error) {
 	getUri := fmt.Sprintf(nsxtypes.EdgeDLRGetInterfaceUriFormat,
-		edlr.Nsxc.MgrConfig.Uri, edgeId, index)
+		edlr.Nsxc.MgrConfig.Uri, edgeId)
 
 	resp, err := edlr.Nsxc.Rclient.R().Get(getUri)
 	if err != nil {
@@ -33,7 +33,7 @@ func (edlr EdgeDLRInterfaces) Get(edgeId string, index string) (*nsxtypes.EdgeDL
 		return nil, err
 	}
 
-	iface := nsxtypes.NewEdgeDLRInterface()
+	iface := nsxtypes.NewEdgeDLRAddInterfacesResp()
 
 	err = xml.Unmarshal(resp.Body(), iface)
 	if err != nil {
@@ -75,21 +75,11 @@ func (edlr EdgeDLRInterfaces) Post(interfaces *nsxtypes.EdgeDLRAddInterfacesSpec
 }
 
 // DELETE method to remove Interface
-func (edlr EdgeDLRInterfaces) Delete(edgeId string, index string) error {
+func (edlr EdgeDLRInterfaces) Delete(edgeId string) error {
 
-	var deleteUri string
-	fmt.Errorf("[ERROR] index #%s# \n", index)
-	if index == "" { //Delete all intefaces
-		deleteUri = fmt.Sprintf(
-			nsxtypes.EdgeDLRDelAllInterfacesUriFormat,
-			edlr.Nsxc.MgrConfig.Uri, edgeId)
-	} else {
-		deleteUri = fmt.Sprintf(
-			nsxtypes.EdgeDLRDelbyIndexInterfacesUriFormat,
-			edlr.Nsxc.MgrConfig.Uri, edgeId, index)
-	}
-
-	fmt.Errorf("[ERROR] deleteUri %s \n", deleteUri)
+	deleteUri := fmt.Sprintf(
+		nsxtypes.EdgeDLRDelAllInterfacesUriFormat,
+		edlr.Nsxc.MgrConfig.Uri, edgeId)
 	resp, err := edlr.Nsxc.Rclient.R().Delete(deleteUri)
 	if err != nil {
 		return err

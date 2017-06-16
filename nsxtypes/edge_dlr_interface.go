@@ -8,7 +8,7 @@ const (
 	EdgeDLRAddInterfacesUriFormat        = "%s/api/4.0/edges/%s/interfaces/?action=patch"
 	EdgeDLRDelAllInterfacesUriFormat     = "%s/api/4.0/edges/%s/interfaces"
 	EdgeDLRDelbyIndexInterfacesUriFormat = "%s/api/4.0/edges/%s/interfaces/?index=%s"
-	EdgeDLRGetInterfaceUriFormat         = "%s/api/4.0/edges/%s/interfaces/%s"
+	EdgeDLRGetInterfaceUriFormat         = "%s/api/4.0/edges/%s/interfaces"
 )
 
 type EdgeDLRInterface struct {

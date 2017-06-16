@@ -85,20 +85,11 @@ func TestAddInterfaces(t *testing.T) {
 	}
 	fmt.Println("%v", addresp)
 
-	var index string
-	index = addresp.EdgeDLRInterfaceList[0].Index
-	err = dlrInterfaces.Delete(edgeId, index)
+	err = dlrInterfaces.Delete(edgeId)
 	if err != nil {
 		t.Fatalf("[Error] dlrInterfaces.DELETE() returned error : %v", err)
 		return
 	}
-	fmt.Println("Deleted Edge Interface: ", resp.EdgeId, "-", index)
+	fmt.Println("Deleted Edge Interface: ", resp.EdgeId)
 
-	err = edge.Delete(edgeId)
-
-	if err != nil {
-		t.Fatalf("[Error] edge.Delete () returned error : %v", err)
-		return
-	}
-	fmt.Println("Deleted Edge: ", resp.EdgeId)
 }
