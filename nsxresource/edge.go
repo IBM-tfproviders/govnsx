@@ -29,7 +29,8 @@ func (e Edge) Get(edgeId string) (*nsxtypes.Edge, error) {
 	}
 
 	if resp.StatusCode() != 200 {
-		err := fmt.Errorf("[ERROR] %d : %s", resp.StatusCode(), resp.Status())
+		err := fmt.Errorf("[ERROR] Get Edge Id %s received error: %s",
+			 edgeId, resp.Status())
 		return nil, err
 	}
 
