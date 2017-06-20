@@ -36,19 +36,19 @@ type Vnic struct {
 }
 
 type EdgeInstallSpec struct {
-	XMLName     xml.Name `xml:"edge"`
-	Datacenter  string   `xml:"datacenterName"`
-	Name        string   `xml:"name,omitempty"`
-	Description string   `xml:"description,omitempty"`
-	Type        string   `xml:"type,omitempty"`
-	Tenant      string   `xml:"tenant,omitempty"`
-	Fqdn        string   `xml:"fqdn,omitempty"`
-	VseLogLevel string   `xml:"vseLogLevel,omitempty"`
-	EnableAesni bool     `xml:"enableAesni,omitempty"`
-	EnableFips  bool     `xml:"enableFips,omitempty"`
-	Appliances Appliances `xml:"appliances"`
-	Vnics      []Vnic    `xml:"vnics>vnic,omitempty"`
-    Features   Features  `xml:"features"`
+	XMLName     xml.Name   `xml:"edge"`
+	Datacenter  string     `xml:"datacenterName"`
+	Name        string     `xml:"name,omitempty"`
+	Description string     `xml:"description,omitempty"`
+	Type        string     `xml:"type,omitempty"`
+	Tenant      string     `xml:"tenant,omitempty"`
+	Fqdn        string     `xml:"fqdn,omitempty"`
+	VseLogLevel string     `xml:"vseLogLevel,omitempty"`
+	EnableAesni bool       `xml:"enableAesni,omitempty"`
+	EnableFips  bool       `xml:"enableFips,omitempty"`
+	Appliances  Appliances `xml:"appliances"`
+	Vnics       []Vnic     `xml:"vnics>vnic,omitempty"`
+	Features    Features   `xml:"features"`
 }
 
 type EdgePostResp struct {
@@ -57,21 +57,21 @@ type EdgePostResp struct {
 }
 
 type Features struct {
-    Dhcp           DHCPConfig  `xml:"dhcp"`
+	Dhcp DHCPConfig `xml:"dhcp"`
 }
 
 type Edge struct {
-	XMLName        xml.Name    `xml:"edge"`
-	Id             string      `xml:"id"`
-	Version        string      `xml:"version"`
-	Description    string      `xml:"description"`
-	Status         string      `xml:"status"`
-	Tenant         string      `xml:"tenant"`
-	Name           string      `xml:"name"`
-	Appliances     Appliances  `xml:"appliances"`
-	Vnics          []Vnic      `xml:"vnics>vnic"`
-	Type           string      `xml:"type"`
-    Features       Features    `xml:"features"`
+	XMLName     xml.Name   `xml:"edge"`
+	Id          string     `xml:"id"`
+	Version     string     `xml:"version"`
+	Description string     `xml:"description"`
+	Status      string     `xml:"status"`
+	Tenant      string     `xml:"tenant"`
+	Name        string     `xml:"name"`
+	Appliances  Appliances `xml:"appliances"`
+	Vnics       []Vnic     `xml:"vnics>vnic"`
+	Type        string     `xml:"type"`
+	Features    Features   `xml:"features"`
 }
 
 func NewEdge() *Edge {

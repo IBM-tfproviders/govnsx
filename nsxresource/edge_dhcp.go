@@ -36,7 +36,7 @@ func (ed EdgeDHCP) Put(dhcpSpec *nsxtypes.ConfigDHCPServiceSpec,
 
 	sc := resp.StatusCode()
 	if (sc < 200) || (sc > 204) {
-        err := fmt.Errorf("[ERROR] %d : %s,\n XML: %s\n URI:%s\n, Body:%s",
+		err := fmt.Errorf("[ERROR] %d : %s,\n XML: %s\n URI:%s\n, Body:%s",
 			resp.StatusCode(),
 			resp.Status(), outputXML, putUri, resp.Body())
 		return err
