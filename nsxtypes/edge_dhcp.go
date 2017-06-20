@@ -41,6 +41,7 @@ type AddIPPoolToDHCPServiceResp struct {
 
 type DHCPConfig struct {
 	XMLName xml.Name    `xml:"dhcp"`
+	Enabled bool        `xml:"enabled,omitempty"`
 	IPPools []IPPool    `xml:"ipPools>ipPool"`
 	Logging LoggingInfo `xml:"logging,omitempty"`
 }

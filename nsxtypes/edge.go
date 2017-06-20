@@ -48,11 +48,16 @@ type EdgeInstallSpec struct {
 	EnableFips  bool       `xml:"enableFips,omitempty"`
 	Appliances  Appliances `xml:"appliances"`
 	Vnics       []Vnic     `xml:"vnics>vnic,omitempty"`
+	Features    Features   `xml:"features"`
 }
 
 type EdgePostResp struct {
 	EdgeId   string
 	Location string
+}
+
+type Features struct {
+	Dhcp DHCPConfig `xml:"dhcp"`
 }
 
 type Edge struct {
@@ -66,6 +71,7 @@ type Edge struct {
 	Appliances  Appliances `xml:"appliances"`
 	Vnics       []Vnic     `xml:"vnics>vnic"`
 	Type        string     `xml:"type"`
+	Features    Features   `xml:"features"`
 }
 
 func NewEdge() *Edge {
