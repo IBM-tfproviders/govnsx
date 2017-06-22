@@ -75,11 +75,18 @@ func (edlr EdgeDLRInterfaces) Post(interfaces *nsxtypes.EdgeDLRAddInterfacesSpec
 }
 
 // DELETE method to remove Interface
-func (edlr EdgeDLRInterfaces) Delete(edgeId string) error {
+func (edlr EdgeDLRInterfaces) Delete(edgeId string, index ...string) error {
 
-	deleteUri := fmt.Sprintf(
-		nsxtypes.EdgeDLRDelAllInterfacesUriFormat,
-		edlr.Nsxc.MgrConfig.Uri, edgeId)
+	var deleteUri string
+	if len(index) > 0 {
+		deleteUri = fmt.Sprintf(
+			nsxtypes.EdgeDLRDelbyIndexInterfacesUriFormat,
+			edlr.Nsxc.MgrConfig.Uri, edgeId, index[0])
+	} else {
+		deleteUri = fmt.Sprintf(
+			nsxtypes.EdgeDLRDelAllInterfacesUriFormat,
+			edlr.Nsxc.MgrConfig.Uri, edgeId)
+	}
 	resp, err := edlr.Nsxc.Rclient.R().Delete(deleteUri)
 	if err != nil {
 		return err
