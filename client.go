@@ -4,7 +4,7 @@ import (
 	//"fmt"
 	"crypto/tls"
 
-	"github.com/go-resty/resty"
+	"gopkg.in/resty.v1"
 )
 
 type NsxManagerConfig struct {
