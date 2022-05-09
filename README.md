@@ -11,7 +11,7 @@ You may also need to upgrade the version of required modules in go.mod and regen
 
 - export GOPATH=<YOUR_GO_PATH>
 - export GO_BIN_LOCATION=<YOUR_GO_BIN_PATH>
-- export NSXV_VERSION=1.0.2
+- export GOVX_VERSION=1.0.2
 - mkdir -p $GOPATH/src/github.com/IBM-tfproviders
 - git clone -b v$NSXV_VERSION https://github.com/IBM-tfproviders/govnsx
 - cd $GOPATH/src/github.com/IBM-tfproviders/govnsx
