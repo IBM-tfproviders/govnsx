@@ -15,5 +15,5 @@ You may also need to upgrade the version of required modules in go.mod and regen
 - mkdir -p $GOPATH/src/github.com/IBM-tfproviders
 - git clone -b $GOVX_VERSION https://github.com/IBM-tfproviders/govnsx
 - cd $GOPATH/src/github.com/IBM-tfproviders/govnsx
-- $GO_BIN_LOCATION mod tidy
-- $GO_BIN_LOCATION install
+- $GO_BIN_LOCATION/go mod tidy
+- $GO_BIN_LOCATION/go install
